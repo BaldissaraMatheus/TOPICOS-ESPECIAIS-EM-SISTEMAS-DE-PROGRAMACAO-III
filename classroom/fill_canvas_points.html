@@ -1,0 +1,213 @@
+<!-- MIT License
+
+Copyright (c) 2018 Packt
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE. -->
+
+<!--Este código é um reprodução, alteração ou extensão de parte dos códigos que podem ser obtidos em
+https://github.com/PacktPublishing/Real-Time-3D-Graphics-with-WebGL-2/blob/master/LICENSE  
+sob a licença acima especificada.
+-->
+
+<html>
+  <head>
+    <title>Drawing in HTML5 canvas</title>
+    <link
+      rel="shortcut icon"
+      type="image/png"
+      href="/common/images/favicon.png"
+    />
+
+    <style type="text/css">
+      canvas {
+        border: 1px dotted blue;
+      }
+      .inline-block-child {
+        display: inline-block;
+      }
+    </style>
+  </head>
+
+  <body>
+    <canvas id="canvas" width="800" height="600">
+      Your browser does not support the HTML5 canvas element.
+    </canvas>
+
+    <script>
+      //Describes a point list data structure
+      class PointList {
+        constructor() {
+          this._list = [];
+        }
+
+        get size() {
+          return this._list.length;
+        }
+
+        get list() {
+          return this._list;
+        }
+
+        push(point) {
+          this._list.push(point);
+        }
+
+        randomFill(pointList, n) {
+          var w = canvas.width;
+          var h = canvas.height;
+
+          var i;
+          for (i = 0; i < n; i++) {
+            var x = Math.floor(Math.random() * w);
+            var y = Math.floor(Math.random() * h);
+
+            var r = Math.floor(Math.random() * 255);
+            var g = Math.floor(Math.random() * 255);
+            var b = Math.floor(Math.random() * 255);
+            var color = new Color(r, g, b, 1);
+            var point = new Point(x, y, 8, color);
+
+            this.push(point);
+          }
+        }
+      }
+
+      //Represents a color
+      class Color {
+        constructor(r, g, b, a) {
+          this._r = r;
+          this._g = g;
+          this._b = b;
+          this._a = a;
+        }
+
+        get r() {
+          return this._r;
+        }
+
+        set r(r) {
+          this._r = r;
+        }
+
+        get g() {
+          return this._g;
+        }
+
+        set g(g) {
+          this._g = g;
+        }
+
+        get b() {
+          return this._b;
+        }
+        set b(b) {
+          this._b = b;
+        }
+
+        get a() {
+          return this._a;
+        }
+        set a(a) {
+          this._a = a;
+        }
+      }
+
+      //Represents a point
+      class Point {
+        constructor(x, y, size, color) {
+          this._x = x;
+          this._y = y;
+          this._size = size;
+          this._color = color;
+        }
+
+        get x() {
+          return this._x;
+        }
+
+        get y() {
+          return this._y;
+        }
+
+        set x(_x) {
+          this._x = x;
+        }
+
+        set y(_y) {
+          this._y = y;
+        }
+
+        get size() {
+          return this._size;
+        }
+
+        set size(_s) {
+          this._size = s;
+        }
+
+        get color() {
+          return this._color;
+        }
+
+        set color(color) {
+          this._color = color;
+        }
+      }
+
+      var pointList = new PointList();
+
+      // Draw all points in the poit list
+      function drawPoints(ctx, pointList) {
+        ctx.moveTo(0, 0);
+        var i;
+        for (i = 0; i < pointList.size; i++) {
+          //Get a point
+          point = pointList.list[i];
+          //Set the fill color
+          //The ${ } template literal enables us to compose strings. For example,
+          //the value in point.color.r is added pass to the string
+          ctx.fillStyle = `rgb(${point.color.r},${point.color.g},${point.color.b}`;
+          var pos_x = point.x - Math.round(point.size / 2.0);
+          var pos_y = point.y - Math.round(point.size / 2.0);
+          //Draw a rectangular point
+          ctx.fillRect(pos_x, pos_y, point.size, point.size);
+        }
+      }
+
+      function render(canvas, pointList) {
+        // Get HTML5 2d canvas
+        var ctx = canvas.getContext("2d");
+        // Draw points
+        drawPoints(ctx, pointList);
+      }
+
+      function init() {
+        var canvas = document.getElementById("canvas");
+
+        // Create a list of points in random position
+        pointList.randomFill(pointList, 50);
+
+        // Render the point list in the canvas
+        render(canvas, pointList);
+      }
+
+      window.onload = init();
+    </script>
+  </body>
+</html>
