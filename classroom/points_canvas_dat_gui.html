@@ -102,42 +102,6 @@ sob a licença acima especificada.
         }
       }
 
-      class PointList {
-        constructor() {
-          this._list = [];
-        }
-
-        get size() {
-          return this._list.length;
-        }
-
-        get list() {
-          return this._list;
-        }
-
-        push(point) {
-          this._list.push(point);
-        }
-
-        randomFill(n) {
-          var w = canvas.width;
-          var h = canvas.height;
-
-          var i;
-          for (i = 0; i < n; i++) {
-            var x = Math.floor(Math.random() * w);
-            var y = Math.floor(Math.random() * h);
-
-            var r = Math.floor(Math.random() * 255);
-            var g = Math.floor(Math.random() * 255);
-            var b = Math.floor(Math.random() * 255);
-            var color = new Color(r, g, b, 1);
-            var point = new Point(x, y, 8, color);
-
-            this.push(point);
-          }
-        }
-      }
 
       // Defines an object containing the variables to be modified or displayed by the GUI
       ControlVariables = function () {
